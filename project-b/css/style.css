@@ -6,9 +6,9 @@ body {
 main {
     display: flex;
     justify-content: space-between;
-    margin-top: 50px;
+    margin-top: 0;
     margin-left: 50px;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
 }
 
 
