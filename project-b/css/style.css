@@ -1,0 +1,51 @@
+body {
+    background-color: black;
+    color: aliceblue;
+}
+
+main {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-bottom: 100px;
+}
+
+
+
+.intro {
+    width: 450px;
+    height: 200px;
+
+}
+
+#presentation {
+    font-size: 30px;
+}
+
+.decoration {
+    margin-top: 50px;
+    border-right: 0;
+}
+
+.decoration:hover {
+    opacity: 0.8;
+}
+
+footer {
+    color: azure;
+}
+
+/*link*/
+a {
+    text-decoration: none;
+    color: aqua
+}
+
+a:hover {
+    color: pink;
+}
+
+a:active {
+    color: black;
+}
