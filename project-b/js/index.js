@@ -3,17 +3,21 @@ let glitches = [];
 let sequence = 0;
 let click = 0;
 function setup() {
-    createCanvas(640, 420);
+    createCanvas(1080, 650);
     background(255);
     button();
 }
 
 function draw() {
-
+    //add soundeffect while clicking
     if (click >= 5 && click <= 10) {
         scene2();
-    } else if (click > 10) {
+    } else if (click > 10 && click < 20) {
         scene1();
+    }
+
+    if (glitches.length > 5000) {
+        scene3();
     }
 }
 
@@ -34,17 +38,31 @@ function scene1() {
 }
 
 function scene2() {
-    for (let i = 1; i < 10; i += 1) {
+    for (let i = 0; i < 50; i += 1) {
         glitches.push(new Glitch(width / 2, height / 2));
     }
-    for (j = 1; j < glitches.length; j++) {
+    for (let j = 1; j < glitches.length; j++) {
         let g = glitches[j];
         g.display();
         g.rotate();
         g.update();
     }
+    //how to slow down
+    if (glitches.length > random(200)) {
+        glitches.splice(0, 2);
+    }
 }
-
+function scene3() {
+    //clear the original array
+    glitches.clear();
+    for (let i = 0; i < 10; i++) {
+        glictches.push(new Glitch(random(1000), random(500)));
+    }
+    for (let i = 0; i < glitches.length; i++) {
+        let g = glitches[i];
+        g.display;
+    }
+}
 class Glitch {
     constructor(startX, startY) {
         this.x = startX;
@@ -55,6 +73,7 @@ class Glitch {
     update() {
         this.angle += 2;
         //this.width /= 2;
+        this.width += random(-10, 10);
     }
     display() {
         push();
