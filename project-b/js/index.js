@@ -2,6 +2,12 @@ let btn;
 let glitches = [];
 let sequence = 0;
 let click = 0;
+let clickSound;
+
+function preload() {
+    //clickSound = loadSound('clickSound.mp3'); 
+}
+
 function setup() {
     createCanvas(1080, 650);
     background(255);
@@ -9,22 +15,24 @@ function setup() {
 }
 
 function draw() {
-    //add soundeffect while clicking
     if (click >= 5 && click <= 10) {
         scene2();
-    } else if (click > 10 && click < 20) {
+    } else if (click > 20 && click <= 30) {
         scene1();
+        //console.log(glitches.length)
+    } else if (click > 30 && click <= 40) {
+        scene3();
+    } else if (click > 40 && click <= 50) {
+        scene1();
+    } else if (click > 50 && click <= 60) {
+        button();
     }
 
-    if (glitches.length > 5000) {
-        scene3();
-    }
 }
 
 function button() {
     btn = createButton("CLICK");
     btn.position(random(900), random(500));
-    //btn.position(width / 2 - btn.width / 2, height / 2 - btn.height / 2);
     btn.mousePressed(scene1);
 }
 function mousePressed() {
@@ -38,6 +46,7 @@ function scene1() {
 }
 
 function scene2() {
+    //glitches.length = 0;
     for (let i = 0; i < 50; i += 1) {
         glitches.push(new Glitch(width / 2, height / 2));
     }
@@ -49,18 +58,20 @@ function scene2() {
     }
     //how to slow down
     if (glitches.length > random(200)) {
-        glitches.splice(0, 2);
+        glitches.splice(0, 5);
     }
 }
 function scene3() {
     //clear the original array
-    glitches.clear();
-    for (let i = 0; i < 10; i++) {
-        glictches.push(new Glitch(random(1000), random(500)));
+    glitches.length = 0;
+    for (let i = 0; i < 50; i++) {
+        glitches.push(new Glitch(random(1000), random(500)));
     }
     for (let i = 0; i < glitches.length; i++) {
         let g = glitches[i];
-        g.display;
+        g.small();
+        g.display();
+
     }
 }
 class Glitch {
@@ -74,6 +85,9 @@ class Glitch {
         this.angle += 2;
         //this.width /= 2;
         this.width += random(-10, 10);
+    }
+    small() {
+        this.width = random(width / 16, width / 8);
     }
     display() {
         push();
