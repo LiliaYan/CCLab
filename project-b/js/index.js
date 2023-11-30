@@ -6,11 +6,17 @@ let click = 0;
 let clickSound;
 let backMusic;
 let errorSound;
+let correctSound;
+let sceneFaceMusic;
+let backMusicPlaying = false;
+let sceneFaceMusicPlaying = false;
 
 function preload() {
     clickSound = loadSound('music/mouse-click.mp3');
     backMusic = loadSound('music/sci-fi-sound.mp3');
     errorSound = loadSound('music/error.mp3');
+    correctSound = loadSound('music/correct.mp3');
+    sceneFaceMusic = loadSound('music/scene-face.mp3');
 }
 
 
@@ -25,7 +31,7 @@ function setup() {
 }
 
 function draw() {
-    if (click >= 5 && click <= 10) {
+    if (click >= 6 && click <= 10) {
         scene2();
     } else if (click > 11 && click <= 20) {
         scene1();
@@ -51,7 +57,7 @@ function onButtonClick() {
 
 function button() {
     btn = createButton("CLICK");
-    btn.position(random(900), random(500));
+    btn.position(random(1200), random(700));
     btn.mousePressed(onButtonClick);
 }
 
@@ -66,6 +72,7 @@ function mousePressed() {
             errorSound.play();
         }
     }
+    //if 
     if (click > 11 && click <= 20) {
         if (mousePressed && errorSound) {
             errorSound.play();
@@ -76,7 +83,19 @@ function mousePressed() {
             errorSound.play();
         }
     }
+    if (click > 40 && click <= 50) {
+        if (mousePressed && sceneFaceMusic) {
+            let volValue = map(click, 40, 50, 0.5, 5.0);
+            volValue = constrain(volValue, 0.5, 5.0);
+            sceneFaceMusic.setVolume(volValue);
+            if (!sceneFaceMusicPlaying) {
+                sceneFaceMusic.play();
+                sceneFacePlaying = true;
+            }
+        }
+    }
 }
+
 function scene1() {
     background(0);
     btn.hide();
@@ -97,12 +116,16 @@ function scene2() {
         g.display();
     }
     glitches.splice(0, 18);
-    backMusic.play();
-    //how to slow down
+    if (!backMusicPlaying) {
+        backMusic.loop();
+        backMusicPlaying = true;
+    }
+
     //if (glitches.length > random(200)) {
     //    glitches.splice(0, 5);
     //}
 }
+
 function scene3() {
     //clear the original array
     glitches.length = 0;
@@ -131,9 +154,7 @@ function sceneFace() {
                 fill(red(c), green(c), blue(c));
             } else {
                 fill(random(255), random(255), random(255));
-
             }
-
         } else if (green(c) > red(c) && green(c) > blue(c)) {
             fill(0, 255, 0);
         } else if (blue(c) > red(c) && blue(c) > green(c)) {
