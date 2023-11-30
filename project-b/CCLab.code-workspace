@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../Desktop/Fall 2023/final"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "CCLab"
+	}
+}
