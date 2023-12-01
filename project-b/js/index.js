@@ -72,7 +72,6 @@ function mousePressed() {
             errorSound.play();
         }
     }
-    //if 
     if (click > 11 && click <= 20) {
         if (mousePressed && errorSound) {
             errorSound.play();
@@ -93,9 +92,14 @@ function mousePressed() {
                 sceneFacePlaying = true;
             }
         }
+        for (let i = 0; i < 100; i++) {
+            fill(0);
+            let x = random(width);
+            let y = random(height);
+            circle(x, y, random(100, 200));
+        }
     }
 }
-
 function scene1() {
     background(0);
     btn.hide();
@@ -151,15 +155,17 @@ function sceneFace() {
         //let avg = (red(c) + green(c) + blue(c)) / 3;
         if (red(c) > green(c) && red(c) > blue(c)) {
             if (red(c) >= 255 / 2) {
-                fill(red(c), green(c), blue(c));
-            } else {
                 fill(random(255), random(255), random(255));
+
+            } else {
+                fill(red(c), green(c), blue(c));
             }
         } else if (green(c) > red(c) && green(c) > blue(c)) {
-            fill(0, 255, 0);
+            fill(red(c), green(c), blue(c));
         } else if (blue(c) > red(c) && blue(c) > green(c)) {
-            fill(0, 0, 255);
+            fill(red(c), green(c), blue(c));
         }
+
         //fill(avg, avg + random(-20, 20), avg, 255);
         noStroke();
         rectMode(CENTER);
@@ -209,6 +215,7 @@ class Glitch {
     }
 }
 
-//note: add more interaction with html by manipulating the size of the canvas
-//And try to find more suitable colors to present the idea of dream and glitch
-//And for the class object, add interaction with the mouse and then swtich to the next stage
+//note: try to find more suitable colors to present the idea of dream and glitch
+//interaction between the mouse and the class object
+//changes to the errorSound
+//color change in scene2
