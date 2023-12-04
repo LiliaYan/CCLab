@@ -1,22 +1,31 @@
+/* Remove default margins */
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0;
+}
+
 body {
     background-color: black;
     color: aliceblue;
 }
 
-main {
+.main-container {
     display: flex;
     justify-content: space-between;
-    margin-top: 0;
-    margin-left: 50px;
-    margin-bottom: 50px;
+    max-width: 900px;
+    margin: 100px auto;
 }
-
-
 
 .intro {
     width: 450px;
     height: 200px;
-
 }
 
 #presentation {
@@ -25,7 +34,7 @@ main {
 
 .decoration {
     margin-top: 50px;
-    border-right: 0;
+    /* border-right: 0; */
 }
 
 .decoration:hover {

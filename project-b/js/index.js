@@ -1,3 +1,9 @@
+/*
+window.open("index.html", "_self");
+*/
+
+
+
 let cam;
 let btn;
 let glitches = [];
@@ -10,6 +16,8 @@ let correctSound;
 let sceneFaceMusic;
 let backMusicPlaying = false;
 let sceneFaceMusicPlaying = false;
+let glitchSound;
+let glitchSoundPlaying = false;
 
 function preload() {
     clickSound = loadSound('music/mouse-click.mp3');
@@ -17,12 +25,12 @@ function preload() {
     errorSound = loadSound('music/error.mp3');
     correctSound = loadSound('music/correct.mp3');
     sceneFaceMusic = loadSound('music/scene-face.mp3');
+    glitchSound = loadSound('music/glitch-sound.mp3');
 }
 
-
 function setup() {
-    createCanvas(1080, 650);
-    background(255);
+    createCanvas(windowWidth, windowHeight);
+    background(0);
     button();
     angleMode(DEGREES);
     cam = createCapture(VIDEO);
@@ -39,7 +47,9 @@ function draw() {
     } else if (click > 20 && click <= 30) {
         scene3();
     } else if (click > 30 && click <= 40) {
-        scene1();
+        glitchSound.stop();
+        //scene1();
+        //background(random(255));
     } else if (click > 40 && click <= 50) {
         sceneFace();
     } else if (click > 50 && click <= 60) {
@@ -57,7 +67,7 @@ function onButtonClick() {
 
 function button() {
     btn = createButton("CLICK");
-    btn.position(random(1200), random(700));
+    btn.position(random(width), random(height));
     btn.mousePressed(onButtonClick);
 }
 
@@ -74,11 +84,29 @@ function mousePressed() {
     }
     if (click > 11 && click <= 20) {
         if (mousePressed && errorSound) {
-            errorSound.play();
+            let n = floor(random(0, 2));
+            if (n == 1) {
+                errorSound.play();
+            } else {
+                correctSound.play();
+            }
+
+        }
+    }
+    if (click > 20 && click <= 30) {
+        if (mousePressed && glitchSound) {
+            glitchSound.setVolume(0.1);
+            if (!glitchSoundPlaying) {
+                glitchSound.play();
+                glitchSoundPlaying = true;
+            }
         }
     }
     if (click > 30 && click <= 40) {
         if (mousePressed && errorSound) {
+            let panValue = map(mouseX, 0, width, -1.0, 1.0);
+            panValue = constrain(panValue, -1.0, 1.0);
+            errorSound.pan(panValue)
             errorSound.play();
         }
     }
@@ -89,21 +117,21 @@ function mousePressed() {
             sceneFaceMusic.setVolume(volValue);
             if (!sceneFaceMusicPlaying) {
                 sceneFaceMusic.play();
-                sceneFacePlaying = true;
+                //sceneFaceMusicPlaying = true;
             }
         }
-        for (let i = 0; i < 100; i++) {
-            fill(0);
-            let x = random(width);
-            let y = random(height);
-            circle(x, y, random(100, 200));
-        }
+    }
+    if (click > 60) {
+        window.open("index.html", "_self");
     }
 }
+
 function scene1() {
     background(0);
     btn.hide();
     backMusic.stop();
+    glitchSound.stop();
+    cursor(HAND);
 }
 
 function scene2() {
@@ -124,10 +152,6 @@ function scene2() {
         backMusic.loop();
         backMusicPlaying = true;
     }
-
-    //if (glitches.length > random(200)) {
-    //    glitches.splice(0, 5);
-    //}
 }
 
 function scene3() {
@@ -135,13 +159,13 @@ function scene3() {
     glitches.length = 0;
     for (let i = 0; i < 50; i++) {
         let w = map(click, 20, 30, 0, width);
-        glitches.push(new Glitch(random(w), random(height)));
+        let h = map(click, 20, 30, 0, height);
+        glitches.push(new Glitch(random(w), random(h)));
     }
     for (let i = 0; i < glitches.length; i++) {
         let g = glitches[i];
         g.small();
         g.display();
-
     }
 }
 
@@ -164,9 +188,13 @@ function sceneFace() {
             fill(red(c), green(c), blue(c));
         } else if (blue(c) > red(c) && blue(c) > green(c)) {
             fill(red(c), green(c), blue(c));
+        } else if (mouseIsPressed) {
+            fill(red(c), green(c), blue(c));
         }
-
         //fill(avg, avg + random(-20, 20), avg, 255);
+        if (click % 2 == 0) {
+            fill(c);
+        }
         noStroke();
         rectMode(CENTER);
         rect(x, y, random(30), random(50));
@@ -182,6 +210,7 @@ class Glitch {
         this.angle = 0;
         //this.a = 1
         this.alpha = startA;
+        //this.c = random(255);
     }
     update() {
         if (this.angle >= 360) {
@@ -214,8 +243,3 @@ class Glitch {
         //pop();
     }
 }
-
-//note: try to find more suitable colors to present the idea of dream and glitch
-//interaction between the mouse and the class object
-//changes to the errorSound
-//color change in scene2
